@@ -8,7 +8,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Sing In Page',
+      title: 'Авторизуйтесь',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.green,
@@ -37,11 +37,11 @@ class _AuthPageState extends State<AuthPage> {
           height: 50,
           alignment: Alignment.center,
           child: Text(
-            'Sing In',
+            'Авторизация',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
           ),
         ),
-        backgroundColor: const Color.fromARGB(255, 58, 194, 54),
+        backgroundColor: const Color.fromARGB(255, 54, 189, 194),
         toolbarHeight: 30,
       ),
       body: Center(
@@ -59,7 +59,7 @@ class _AuthPageState extends State<AuthPage> {
                       decoration: InputDecoration(labelText: 'e-mail'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter your email';
+                          return 'Пожалуйста, введите свой логин';
                         }
                         return null;
                       },
@@ -73,7 +73,7 @@ class _AuthPageState extends State<AuthPage> {
                       obscureText: true,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter your password';
+                          return 'Пожалуйста, введите свой пароль';
                         }
                         return null;
                       },
@@ -92,10 +92,10 @@ class _AuthPageState extends State<AuthPage> {
                             });
                           },
                         ),
-                        Text('remember me'), // Уменьшено расстояние
+                        Text('Запомнить меня'), // Уменьшено расстояние
                       ],
                     ),
-                    SizedBox(height: 30), // Отступ перед кнопками
+                    SizedBox(height: 5), // Отступ перед кнопками
                     SizedBox(
                       width: double.infinity, // Устанавливаем ширину кнопки
                       child: ElevatedButton(
@@ -107,10 +107,10 @@ class _AuthPageState extends State<AuthPage> {
                             );
                           }
                         },
-                        child: Text('Log In'),
+                        child: Text('Войти'),
                       ),
                     ),
-                    SizedBox(height: 30), // Отступ между кнопками
+                    SizedBox(height: 5), // Отступ между кнопками
                     SizedBox(
                       width: double.infinity, // Устанавливаем ширину кнопки
                       child: ElevatedButton(
@@ -120,7 +120,7 @@ class _AuthPageState extends State<AuthPage> {
                             SnackBar(content: Text('Navigating to Register...')),
                           );
                         },
-                        child: Text('Sing In'),
+                        child: Text('Зарегистрироваться'),
                         style: ElevatedButton.styleFrom(
                         ),
                       ),
@@ -130,11 +130,11 @@ class _AuthPageState extends State<AuthPage> {
                       onPressed: () {
                         // Логика восстановления пароля
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Navigating to Recover Password...')),
+                          SnackBar(content: Text('Переход в сброс пароля...')),
                         );
                       },
                       child: Text(
-                        'recover the pass',
+                        'Сброс пароля',
                         style: TextStyle(color: Colors.grey), // Цвет текста
                       ),
                     ),
