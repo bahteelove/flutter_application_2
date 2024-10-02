@@ -4,7 +4,7 @@
 
 - [Lab 1](README_FOLDER/1.md)
 - [Lab 2](README_FOLDER/2.md)
-- [Lab 3]
+- [Lab 3](README_FOLDER/3.md)
 - [Lab 4]
 - [Lab 5]
 - [Lab 6]
