@@ -44,6 +44,10 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _addToCart(Buggy buggy) {
+      print('Has been added to cart: ${buggy.model}');
+  }
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -60,6 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
       SecondPage(
         favouriteBuggy: _favouriteBuggy,
         onFavouriteToggle: _toggleFavourite,
+        onAddToCart: _addToCart,
       ),
       const ThirdPage(),
     ];

@@ -6,11 +6,13 @@ import '../models/Buggy.dart';
 class SecondPage extends StatelessWidget {
   final List<Buggy> favouriteBuggy;
   final Function(Buggy) onFavouriteToggle;
+  final Function(Buggy) onAddToCart;
 
   const SecondPage(
       {super.key,
       required this.favouriteBuggy,
-      required this.onFavouriteToggle});
+      required this.onFavouriteToggle,
+      required this.onAddToCart});
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +39,10 @@ class SecondPage extends StatelessWidget {
                     onFavouriteToggle: () {
                       onFavouriteToggle(buggy);
                     },
+                    onAddToCart:() {
+                      onAddToCart(buggy);
+                    },
+
                   );
                 },
               )
