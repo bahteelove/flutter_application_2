@@ -1,92 +1,61 @@
 import 'package:flutter/material.dart';
-import '../models/Buggy.dart';
-import '../window/homeapp.dart';
-import '../window/second_page.dart';
-import '../window/third_page.dart';
-
+import './page1.dart';
+import './user.dart';
+import './cart.dart';
 void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
       home: MyHomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends StatefulWidget{
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
-
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
-  List<Buggy> _favouriteBuggy = [];
+  static const List<Widget> _widgetOptions = <Widget>[
+    FirstPage(),
+    Cart(),
+    Profile(),
+  ];
 
-  void _toggleFavourite(Buggy buggy) {
-    setState(() {
-      if (_favouriteBuggy.contains(buggy)){
-        _favouriteBuggy.remove(buggy);
-      } else {
-        _favouriteBuggy.add(buggy);
-      }
-    });
-  }
-
-  void _addToCart(Buggy buggy) {
-      print('Has been added to cart: ${buggy.model}');
-  }
-
-  void _onItemTapped(int index) {
+  void _onItemTapped(int index){
     setState(() {
       _selectedIndex = index;
     });
   }
 
   @override
-  Widget build(BuildContext context) {
-    List<Widget> _widgetOptions = <Widget>[
-      HomePage(
-        onFavouriteToggle: _toggleFavourite,
-        favouriteBuggy: _favouriteBuggy,
-      ),
-      SecondPage(
-        favouriteBuggy: _favouriteBuggy,
-        onFavouriteToggle: _toggleFavourite,
-        onAddToCart: _addToCart,
-      ),
-      const ThirdPage(),
-    ];
+  Widget build (BuildContext context){
     return Scaffold(
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Main',
+            label: 'Main Menu',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Favorite',
+            icon: Icon(Icons.shopping_cart),
+            label: 'Cart',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: 'Profile',
+            label: 'User',
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.white,
+        selectedItemColor: Colors.green,
         onTap: _onItemTapped,
       ),
     );
