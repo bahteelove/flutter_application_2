@@ -9,8 +9,8 @@
 - [Lab 5](README_FOLDER/5.md)
 - [Lab 6](README_FOLDER/6.md)
 - [Lab 7](README_FOLDER/7.md)
-- [Lab 8]
-- [Lab 9]
+- [Lab 8](README_FOLDER/8.md)
+- [Lab 9](README_FOLDER/9.md)
 - [Lab 10]
 - [Lab 11]
 - [Lab 12]
