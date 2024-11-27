@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../models/Buggy.dart';
+import '../models/buggy_model.dart';
 import '../models/cart.dart'; // Импорт модели корзины
 
 class BuggyDetailScreen extends StatelessWidget {

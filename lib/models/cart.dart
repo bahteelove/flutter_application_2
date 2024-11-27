@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'Buggy.dart'; // Импорт модели продукта
+import 'buggy_model.dart'; // Импорт модели продукта
 
 class Cart with ChangeNotifier {
   final Map<String, Buggy> _items = {};

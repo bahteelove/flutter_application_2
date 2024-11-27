@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/Buggy.dart';
+import '../models/buggy_model.dart';
 import '../window/catalog_page.dart';
 
 class ItemNote extends StatelessWidget {

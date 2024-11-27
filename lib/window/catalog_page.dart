@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_2/models/Buggy.dart';
+import 'package:flutter_application_2/models/buggy_model.dart';
 
 class CatalogPage extends StatelessWidget {
   const CatalogPage({super.key, required this.buggy});

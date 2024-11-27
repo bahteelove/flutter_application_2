@@ -1,4 +1,4 @@
-import 'Buggy.dart';
+import 'buggy_model.dart';
 class CartItem {
   final Buggy buggy;
   int quantity;

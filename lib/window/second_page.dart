@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../comps/item_note.dart';
-import '../models/Buggy.dart';
+import '../models/buggy_model.dart';
 
 
 class SecondPage extends StatelessWidget {

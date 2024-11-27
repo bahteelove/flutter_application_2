@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/Buggy.dart';
+import 'models/buggy_model.dart';
 import '../window/homeapp.dart';
 import '../window/second_page.dart';
 import '../window/third_page.dart';

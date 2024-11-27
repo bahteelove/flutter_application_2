@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 
 import '../comps/item_note.dart';
-import '../models/Buggy.dart';
+import '../models/buggy_model.dart';
 import '../window/cart_page.dart';
 import '../models/cart_item.dart';
 
