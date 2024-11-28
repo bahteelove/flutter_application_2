@@ -146,9 +146,15 @@ func main() {
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		}
 	})
-	http.HandleFunc("/cars/", getCarByIDHandler)           // Получение машины по ID
-	http.HandleFunc("/cars/update/", updateCarHandler)     // Обновление машины
-	http.HandleFunc("/cars/delete/", deleteCarHandler)     // Удаление машины
+
+	// Получение машины по ID
+	http.HandleFunc("/cars/", getCarByIDHandler)
+
+	// Обновление машины
+	http.HandleFunc("/cars/update/", updateCarHandler)
+
+	// Удаление машины
+	http.HandleFunc("/cars/delete/", deleteCarHandler)
 
 	// Запуск сервера с CORS
 	fmt.Println("Server is running on port 8080")
