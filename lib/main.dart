@@ -1,7 +1,14 @@
+import '/pages/basket_page.dart';
+import '/pages/favorite.dart';
+import '/pages/login_page.dart';
+import '/pages/profile.dart';
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
+import 'models/note.dart';
+import 'pages/home_page.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() {
+Future<void> main() async {
+  await Supabase.initialize(url: 'https://rklhmudyhvzfujxxptbr.supabase.co' , anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJrbGhtdWR5aHZ6ZnVqeHhwdGJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzI3NzIzMjgsImV4cCI6MjA0ODM0ODMyOH0.fz_kbVmqbPj-cpubfBZbIokZoAlkT49ffx0bBzGXCVo');
   runApp(const MyApp());
 }
 
@@ -11,143 +18,133 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Car Dealership',
+      debugShowCheckedModeBanner: false,
+      title: 'Вкусняшки',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.greenAccent),
+        useMaterial3: true,
       ),
-      home: CarsListScreen(),
+      home: const MyHomePage(),
     );
   }
 }
 
-class CarsListScreen extends StatefulWidget {
-  const CarsListScreen({super.key});
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
 
   @override
-  _CarsListScreenState createState() => _CarsListScreenState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _CarsListScreenState extends State<CarsListScreen> {
-  List<dynamic> cars = [];
-  bool isLoading = true;
-  String errorMessage = '';
-  final Dio _dio = Dio();
+class _MyHomePageState extends State<MyHomePage> {
+  int _selectedIndex = 0;
+  Set<Sweet> favoriteSweets = <Sweet>{};
+  Set<Sweet> basketItems = <Sweet>{};
+  bool _isLoggedIn = false;
+
+  static const List<Widget> _widgetTitles = [
+    Text('Главная'),
+    Text('Избранное'),
+    Text('Корзина'),
+    Text('Профиль'),
+  ];
+
+  late List<Widget> _widgetOptions;
 
   @override
   void initState() {
     super.initState();
-    fetchCars();
-  }
+    _checkAuthStatus();
 
-  Future<void> fetchCars() async {
-    try {
-      final response = await _dio.get('http://localhost:8080/cars');
-      if (response.statusCode == 200) {
-        setState(() {
-          cars = response.data;
-          isLoading = false;
-        });
-      } else {
-        setState(() {
-          errorMessage = 'Failed to load cars';
-          isLoading = false;
-        });
-      }
-    } catch (e) {
+    _widgetOptions = <Widget>[
+      HomePage(
+        favoriteSweets: favoriteSweets,
+        onFavoriteChanged: _onFavoriteChanged,
+        onAddToBasket: _addToBasket,
+      ),
+      FavoritePage(
+        favoriteSweets: favoriteSweets,
+        onFavoriteChanged: _onFavoriteChanged,
+      ),
+      BasketPage(
+        basketItems: basketItems,
+        onRemoveFromBasket: _removeFromBasket,
+      ),
+      _isLoggedIn ? const ProfilePage() : const LoginPage(),
+    ];
+
+    Supabase.instance.client.auth.onAuthStateChange.listen((data) {
+      final session = data.session;
       setState(() {
-        errorMessage = 'Error fetching cars: $e';
-        isLoading = false;
+        _isLoggedIn = session != null;
+        _widgetOptions[3] = _isLoggedIn ? const ProfilePage() : const LoginPage();
       });
-    }
+    });
+  }
+
+  Future<void> _checkAuthStatus() async {
+    final session = Supabase.instance.client.auth.currentSession;
+    setState(() {
+      _isLoggedIn = session != null;
+    });
+  }
+
+  void _onFavoriteChanged(Sweet sweet, bool isFavorite) {
+    setState(() {
+      if (isFavorite) {
+        favoriteSweets.add(sweet);
+      } else {
+        favoriteSweets.remove(sweet);
+      }
+    });
+  }
+
+  void _addToBasket(Sweet sweet) {
+    setState(() {
+      basketItems.add(sweet);
+    });
+  }
+
+  void _removeFromBasket(Sweet sweet) {
+    setState(() {
+      basketItems.remove(sweet);
+    });
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Cars'),
-      ),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : errorMessage.isNotEmpty
-              ? Center(child: Text(errorMessage))
-              : GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, // Количество столбцов
-                    childAspectRatio: 0.75, // Соотношение сторон элементов
-                  ),
-                  itemCount: cars.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CarDetailScreen(car: cars[index]),
-                          ),
-                        );
-                      },
-                      child: Card(
-                        child: Column(
-                          children: [
-                            
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                cars[index]['brand'] + ' ' + cars[index]['model'],
-                                style: const TextStyle(fontWeight: FontWeight.bold),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                '\$${cars[index]['price']}',
-                                style: const TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-    );
-  }
-}
-
-class CarDetailScreen extends StatelessWidget {
-  final dynamic car;
-
-  const CarDetailScreen({super.key, required this.car});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(car['brand'] + ' ' + car['model']),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Brand: ${car['brand']}', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 8),
-              Text('Model: ${car['model']}', style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 8),
-              Text('Price: \$${car['price']}', style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 8),
-              Text('Year: ${car['year']}', style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 8),
-              Text('Description: ${car['description']}', style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 8),
-              Text('Availability: ${car['isAvailable'] ? 'Available' : 'Not Available'}', style: const TextStyle(fontSize: 16)),
-            ],
+      body: _widgetOptions.elementAt(_selectedIndex),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Главная',
           ),
-        ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            label: 'Избранное',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart),
+            label: 'Корзина',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Профиль',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: const Color.fromARGB(255, 20, 137, 55),
+        unselectedItemColor: const Color.fromARGB(255, 20, 137, 55),
+        backgroundColor: Colors.white,
+        onTap: _onItemTapped,
       ),
     );
   }

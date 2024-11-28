@@ -11,7 +11,7 @@
 - [Lab 7](README_FOLDER/7.md)
 - [Lab 8](README_FOLDER/8.md)
 - [Lab 9](README_FOLDER/9.md)
-- [Lab 10]
+- [Lab 10](README_FOLDER/10.md)
 - [Lab 11]
 - [Lab 12]
 - [Lab 13]
